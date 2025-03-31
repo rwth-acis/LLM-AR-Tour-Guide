@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 0
+    path: Assets/Scenes/UIScene.unity
+    guid: 4755b35b590504809a7525fd2109c2e2
+  - enabled: 0
+    path: Assets/Scenes/GeospatialArf6.unity
+    guid: 756ddf877a3104469b58f6a31b0cb446
+  - enabled: 0
+    path: Assets/Scenes/Backup/Aachen/Aachen Cathedral.unity
+    guid: 0f57c4aa200a428489ddbd648f60fd6b
+  - enabled: 0
+    path: "Assets/Scenes/Backup/Aachen/Beginenstra\xDFe.unity"
+    guid: 60c0847abfc33eb42bf86e0a0e318f1b
+  - enabled: 0
+    path: Assets/Scenes/Combined Scene.unity
+    guid: ce3e5a01410fa854aabd0d0a8d58c423
+  - enabled: 0
+    path: Assets/Scenes/Combined Scene 2.unity
+    guid: f25557db46d8d0e4f948b31a8a84f1be
+  - enabled: 0
+    path: Assets/Scenes/Combined Scene 4.unity
+    guid: 62740a7316a8ce742a5e126e91c05be2
+  - enabled: 0
+    path: Assets/Scenes/Combined Scene 5.unity
+    guid: 42df52869cd4d0a499148b97f1059dcb
+  - enabled: 1
+    path: Assets/Scenes/AppScene.unity
+    guid: d10e2bcbadfe9854b9a87081f6113451
+  - enabled: 0
+    path: Assets/Scenes/DeleteScene.unity
+    guid: 301672de9c5717a49a4b891011b3e41e
+  m_configObjects:
+    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 6ee72d15cf39dd748a13eac57397b9af,
+      type: 2}
+    UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: 0465d33c6aee55f44b0237db8b0e0259,
+      type: 2}
+    com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000,
+      guid: e83cebcae9c2cd044971412f7ed0a2c3, type: 2}
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: d0c7cf6a36fe98943aa290496dbdc7ec,
+      type: 2}
+    com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000,
+      guid: 3ee67aedcf6c2ed40baa051a924d3b0e, type: 2}
+    com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000,
+      guid: 3c267afff7936134b8762cdb742b05f6, type: 2}
+    com.unity.addressableassets: {fileID: 11400000, guid: 3127a2228d7973a4180910a399c647f2,
+      type: 2}
+    com.unity.localization.settings: {fileID: 11400000, guid: 9b975c376aaa6274f9024a4312ad5cc0,
+      type: 2}
+    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: c199e683398494f32b4cde18e73ab731,
+      type: 2}
+    com.unity.xr.magicleap.magic_leap_settings: {fileID: 11400000, guid: 0b53a025a635a4393ba0b49822242280,
+      type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 3fd4fc0127790db4bae83f7b77da8d45,
+      type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: b07c4ba7650be4c25b3d0c497e7e2bb8,
+      type: 2}
+  m_UseUCBPForAssetBundles: 0

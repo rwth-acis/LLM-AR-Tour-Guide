@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "542396754931",
+    "project_id": "llm-ar-tourguide",
+    "storage_bucket": "llm-ar-tourguide.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:542396754931:android:9e24a59e7a197413040086",
+        "android_client_info": {
+          "package_name": "com.David_Terhuerne.LLM_AR_Tourguide"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnJsidQDsdUVXMsCC-uqg9ORKttSwsMaA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

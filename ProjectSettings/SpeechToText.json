@@ -1,0 +1,5 @@
+{
+    "AutomatedSetup": false,
+    "SpeechRecognitionUsageDescription": "Speech recognition will be used for speech-to-text conversion.",
+    "MicrophoneUsageDescription": "Microphone will be used with speech recognition."
+}
