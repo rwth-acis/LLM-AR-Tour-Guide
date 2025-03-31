@@ -5,7 +5,7 @@
 This repository contains a Unity Project that was used to build a Tour Guide App that utelizes Augmented Reality and Largle Language Models together to offer an engaging and personalized tour experience.
 
 Currently, the project is incomplete due to file size limitations, which do not allow me to upload the entire UI. In the meantime, feel free to contact me if you have any questions.
-## Prompt
+## Prompt Engineering 
 I want to point out a few interesting scripts regarding the prompting I employed.
 
 ### Tour Generation Prompts
