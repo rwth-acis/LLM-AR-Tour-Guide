@@ -2,7 +2,15 @@
 
 ![Screenshots](https://github.com/user-attachments/assets/226d9f8e-caa9-486b-8300-d9b4d1dd2283)
 
-This repository contains a Unity Project that was used to build a Tour Guide App that utelizes Augmented Reality and Largle Language Models together to offer an engaging and personalized tour experience.
+This repository contains a Unity 6 project that was used to build a tour guide app that utelizes Augmented Reality and Largle Language Models together to offer an engaging and personalized tour experience.
+
+## Features
+* **Personalized Tours:** Tour content is tailored based on user interests gathered via an initial questionnaire and an interactive onboarding chat with the LLM guide. Gathered interest are updated continuously during the tour based on user questions.
+* **AR Tour Guide:** A [Mixed Reality Agent](https://github.com/rwth-acis/Virtual-Agents-Framework) is visualized in the user's real-world environment using AR. Users can choose from different guide characters.
+* **Interactive Agent:** The guide provides explanations, answers user questions, and performs animations like pointing at points of interest or walking the user to the next point of interest.
+* **LLM-Powered Content:** Tour narratives and answers are generated in real-time by Google's Gemini LLM, using Wikipedia content and Google Search grounding (RAG) to enhance accuracy and relevance. Guide animations are also choosen dynamically by the LLM.
+* **AR Navigation & POIs:** AR elements mark nearby main POIs and optional sub-POIs. An AR arrow assists with navigation towards the next POI or locating the guide.
+* **Text-to-Speech & Speech-to-Text:** Natural interaction is enabled through synthesized [voice output](https://cloud.google.com/text-to-speech) for the guide and [voice input](https://github.com/yasirkula/UnitySpeechToText) for user questions.
 
 
 ## Prompt Engineering 
