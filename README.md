@@ -4,25 +4,25 @@
 
 This repository contains a Unity Project that was used to build a Tour Guide App that utelizes Augmented Reality and Largle Language Models together to offer an engaging and personalized tour experience.
 
-Currently, the project is incomplete due to file size limitations, which do not allow me to upload the entire UI. In the meantime, feel free to contact me if you have any questions.
+
 ## Prompt Engineering 
 I want to point out a few interesting scripts regarding the prompting I employed.
 
 ### Tour Generation Prompts
 The generateTourForPointOfInteresting() method generates the tour content here:
-https://github.com/rwth-acis/LLM-AR-Tour-Guide/blob/main/Assets/Scripts/TourGeneration/TourGenerator.cs
+[TourGenerator.cs](https://github.com/rwth-acis/LLM-AR-Tour-Guide/blob/main/Assets/Scripts/TourGeneration/TourGenerator.cs)
 
 ### Guide Memory Prompt
-https://github.com/rwth-acis/LLM-AR-Tour-Guide/blob/main/Assets/Scripts/TourGeneration/TourSummery.cs
+[](https://github.com/rwth-acis/LLM-AR-Tour-Guide/blob/main/Assets/Scripts/TourGeneration/TourSummery.cs)
 
 ### Guide Prompts
 The prompts that include the personality description of the guides can be found at the top of this file, specifically the long_description attributes:
-https://github.com/rwth-acis/LLM-AR-Tour-Guide/blob/main/Assets/Scripts/Guide%20Scripts/GuideManager.cs
+[GuideManager.cs](https://github.com/rwth-acis/LLM-AR-Tour-Guide/blob/main/Assets/Scripts/Guide%20Scripts/GuideManager.cs)
 
 ### Onboarding
 The prompts used during the initial onboarding conversation can be found in this file:
-https://github.com/rwth-acis/LLM-AR-Tour-Guide/blob/main/Assets/Scripts/OnboardingManager.cs
+[OnboardingManager.cs](https://github.com/rwth-acis/LLM-AR-Tour-Guide/blob/main/Assets/Scripts/OnboardingManager.cs)
 
 ### Question Answer Prompt / Main Script
 The prompt used when questions are answered can be found in this script, more specifically in the Method OnAskQuestionAsync(). Apart from that the InformationController is also the script that handles presenting the tour content and answers to the user.
-https://github.com/rwth-acis/LLM-AR-Tour-Guide/blob/main/Assets/Scripts/InformationController.cs
+[InformationController.cs](https://github.com/rwth-acis/LLM-AR-Tour-Guide/blob/main/Assets/Scripts/InformationController.cs)
