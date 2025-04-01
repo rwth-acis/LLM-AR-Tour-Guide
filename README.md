@@ -13,7 +13,8 @@ The generateTourForPointOfInteresting() method generates the tour content here:
 [TourGenerator.cs](https://github.com/rwth-acis/LLM-AR-Tour-Guide/blob/main/Assets/Scripts/TourGeneration/TourGenerator.cs)
 
 ### Guide Memory Prompt
-[](https://github.com/rwth-acis/LLM-AR-Tour-Guide/blob/main/Assets/Scripts/TourGeneration/TourSummery.cs)
+The UpdateSummery() method of the UserInfromation script handeld the internal memory the guide keeps of the user.
+[UserInformation.cs](https://github.com/rwth-acis/LLM-AR-Tour-Guide/blob/main/Assets/Scripts/UserInformation.cs)
 
 ### Guide Prompts
 The prompts that include the personality description of the guides can be found at the top of this file, specifically the long_description attributes:
