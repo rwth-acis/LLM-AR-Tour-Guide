@@ -371,8 +371,9 @@ namespace i5.LLM_AR_Tourguide.Guide_Scripts
                     if (pointOfInterest.gameObject)
                     {
                         if (!taskSystem.didAwake) return null;
-                        return (AgentMovementTask)taskSystem.Tasks.GoTo(pointOfInterest.gameObject, default, 5, true,
-                            false);
+                        AgentMovementTask movementTask = new AgentMovementTask(pointOfInterest.gameObject, default, true);
+                        taskSystem.ScheduleTask(movementTask, 5);
+                        return movementTask;
                     }
                 }
 

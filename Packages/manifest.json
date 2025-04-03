@@ -3,7 +3,7 @@
     "com.cdm.figma": "https://github.com/cdmvision/unity-figma-importer.git#1.9.0",
     "com.cdm.figma.ui": "https://github.com/cdmvision/unity-figma-importer.git#1.9.0-ugui",
     "com.google.ar.core.arfoundation.extensions": "https://github.com/google-ar/arcore-unity-extensions.git#arf6",
-    "com.i5.virtualagents": "file:Virtual-Agents-Framework/Assets/Virtual Agents Framework",
+    "com.i5.virtualagents": "https://github.com/David624634/Virtual-Agents-Framework.git?path=/Assets/Virtual Agents Framework",
     "com.readyplayerme.core": "https://github.com/readyplayerme/rpm-unity-sdk-core.git#v7.3.1",
     "com.unity.adaptiveperformance": "5.1.3",
     "com.unity.adaptiveperformance.google.android": "5.1.3",
