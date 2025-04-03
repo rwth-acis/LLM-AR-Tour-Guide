@@ -2,11 +2,15 @@ using i5.LLM_AR_Tourguide.Audio;
 using i5.LLM_AR_Tourguide.Evaluation;
 using i5.LLM_AR_Tourguide.GeospatialAPI;
 using i5.LLM_AR_Tourguide.Prefab_Scripts;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AdaptivePerformance;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
+using Uralstech.UCloud.TextToSpeech;
+using Uralstech.UGemini;
 using Button = UnityEngine.UI.Button;
 using Slider = UnityEngine.UI.Slider;
 using Toggle = UnityEngine.UI.Toggle;
@@ -43,6 +47,11 @@ namespace i5.LLM_AR_Tourguide.UI_Scripts
         private TextToSpeech _textToSpeech;
 
         private IAdaptivePerformance ap;
+        
+        [SerializeField] private APIKeys apiKeys;
+        [SerializeField] private GeminiManager geminiAPIManager;
+        [SerializeField] private TextToSpeechManager textToSpeechManager;
+        
 
         private int i = -1;
 
@@ -86,6 +95,27 @@ namespace i5.LLM_AR_Tourguide.UI_Scripts
 
             minDistance.onValueChanged.AddListener(delegate { OnMinDistanceChanged(); });
             maxDistance.onValueChanged.AddListener(delegate { OnMaxDistanceChanged(); });
+
+            if (apiKeys == null)
+            {
+                Debug.LogWarning("APIKeys not set in Settings script. Please assign it in the inspector.");
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(apiKeys._GoogleCloudGeminiAPIKey))
+                {
+                    Debug.LogWarning("GoogleCloudGeminiAPIKey is empty. Please set it in the inspector.");
+                }
+                if (string.IsNullOrWhiteSpace(apiKeys._GoogleCloudTextToSpeechAPIKey))
+                {
+                    Debug.LogWarning("GoogleCloudTextToSpeechAPIKey is empty. Please set it in the inspector.");
+                }
+                geminiAPIManager.SetApiKey(apiKeys._GoogleCloudGeminiAPIKey);
+                textToSpeechManager.SetApiKey(apiKeys._GoogleCloudTextToSpeechAPIKey);
+            }
+            
+            
+            
         }
 
         private void Update()

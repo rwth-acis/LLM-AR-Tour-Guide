@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace i5.LLM_AR_Tourguide.Configurations
 {
-    [CreateAssetMenu(fileName = "PointOfInterestData", menuName = "POI Data")]
+    [CreateAssetMenu(fileName = "PointOfInterestData", menuName = "TourGuide/POI Data")]
     public class PointOfInterestData : ScriptableObject
     {
         [SerializeField] public POI[] pointOfInterests =

@@ -251,7 +251,7 @@ namespace i5.LLM_AR_Tourguide.Gemini
                     {
                         // Wait 10 seconds and try again
                         PermissionRequest.ShowToastMessage(
-                            "We are expiring high demand at the moment. Please wait...");
+                            "We are expiring high demand at the moment. Please wait..." );
                         DebugEditor.LogWarning("We are expiring high demand at the moment. Please wait...");
                         await Task.Delay(10000);
                     }
@@ -259,7 +259,7 @@ namespace i5.LLM_AR_Tourguide.Gemini
                     {
                         PermissionRequest.ShowToastMessage(
                             "This might just take a little bit longer than usual. Please wait...");
-                        DebugEditor.LogWarning("A little bit longer than usual. Please wait...");
+                        DebugEditor.LogWarning("A little bit longer than usual. Please wait..." + e);
                         await Task.Delay(10000);
                     }
                 }
