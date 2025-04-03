@@ -14,7 +14,7 @@ namespace i5.LLM_AR_Tourguide.Gemini
     {
         private readonly GeminiTool _geminiSearchGrounding = new()
         {
-            GoogleSearch = new GeminiGoogleSearchRetrieval()
+            //GoogleSearch = new GeminiGoogleSearchRetrieval()
             //{
             //    DynamicRetrievalConfig = new GeminiDynamicRetrievalConfig
             //    {
@@ -85,7 +85,7 @@ namespace i5.LLM_AR_Tourguide.Gemini
                     {
                         Contents = _chatHistory.ToArray(),
                         SystemInstruction = _systemPrompt,
-                        Tools = new[] { _geminiSearchGrounding }
+                        //Tools = new[] { _geminiSearchGrounding }
                     });
                 DebugEditor.Log("Received response.");
                 var responseText = string.Join(", ",
