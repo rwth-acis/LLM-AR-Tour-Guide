@@ -35,6 +35,10 @@ MonoBehaviour:
     m_Key: LocalizationComplete
     m_Metadata:
       m_Items: []
+  - m_Id: 14376271531864064
+    m_Key: PleaseMakeSureThatYouAreConnectedToTheInternet
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

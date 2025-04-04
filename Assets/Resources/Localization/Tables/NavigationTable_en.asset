@@ -39,6 +39,11 @@ MonoBehaviour:
     m_Localized: "Scanning complete \u2713"
     m_Metadata:
       m_Items: []
+  - m_Id: 14376271531864064
+    m_Localized: Please make sure that you are connected to the internet and restart
+      the app.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -39,6 +39,10 @@ MonoBehaviour:
     m_Localized: "Scannen abgeschlossen \u2713"
     m_Metadata:
       m_Items: []
+  - m_Id: 14376271531864064
+    m_Localized: "Pr\xFCfe deine Internetverbindung und starte die App neu."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -433,7 +433,18 @@ namespace i5.LLM_AR_Tourguide.GeospatialAPI
                 // Lost localization during the session.
                 if (!_isLocalizing)
                 {
-                    Debug.Log("Lost localization during the session.");
+                    string reason = string.Empty;
+                    if(isSessionReady == false)
+                        reason += "Session is not ready. ARSession State: " + ARSession.state + ", locationStatus: "+ Input.location.status;
+                    if (earthTrackingState != TrackingState.Tracking)
+                        reason += "EarthTrackingState is not tracking.";
+                    if (pose.OrientationYawAccuracy > orientationYawAccuracyThreshold)
+                        reason += "OrientationYawAccuracy is not tracking.";
+                    if (pose.HorizontalAccuracy > horizontalAccuracyThreshold)
+                        reason += "HorizontalAccuracy is not tracking.";
+                    
+                    Debug.Log("XXXX Lost localization during the session. Reason: " + reason);
+                        
                     localizationProgress.IsLocalizationComplete = false;
                     _isLocalizing = true;
                     _localizationPassedTime = 0f;
@@ -454,6 +465,7 @@ namespace i5.LLM_AR_Tourguide.GeospatialAPI
                 }
                 else
                 {
+                    Debug.Log("XXX Localization in progress.");
                     _localizationPassedTime += Time.deltaTime;
                     SnackBarText.text = _localizationInstructionMessage;
                     localizationProgress.gameObject.SetActive(true);
@@ -462,6 +474,7 @@ namespace i5.LLM_AR_Tourguide.GeospatialAPI
             }
             else if (_isLocalizing)
             {
+                Debug.Log("XXXX Localization complete.");
                 // Finished localization.
                 _isLocalizing = false;
                 _localizationPassedTime = 0f;
@@ -565,6 +578,7 @@ namespace i5.LLM_AR_Tourguide.GeospatialAPI
             RooftopAnchorToggle.onValueChanged.AddListener(OnRooftopAnchorToggled);
 
             _localizationPassedTime = 0f;
+            Debug.Log("XXXX Starting localization.");
             _isLocalizing = true;
             SnackBarText.text = _localizingMessage;
 
@@ -951,17 +965,17 @@ namespace i5.LLM_AR_Tourguide.GeospatialAPI
                 var pointOfInterests = poiM.poiData.pointOfInterests;
                 foreach (var loc in pointOfInterests)
                 {
-                    Debug.Log("Checking: " + loc.title);
-                    Debug.Log("Checking: " + loc.coordinates.latitude + ", " + loc.coordinates.longitude);
-                    Debug.Log("Checking: " + history.Latitude + ", " + history.Longitude);
-                    Debug.Log("Checking Result: " +
+                    DebugEditor.Log("Checking: " + loc.title);
+                    DebugEditor.Log("Checking: " + loc.coordinates.latitude + ", " + loc.coordinates.longitude);
+                    DebugEditor.Log("Checking: " + history.Latitude + ", " + history.Longitude);
+                    DebugEditor.Log("Checking Result: " +
                                     (Math.Abs(loc.coordinates.latitude - history.Latitude) < 0.000001 &&
                                      Math.Abs(loc.coordinates.longitude - history.Longitude) < 0.000001));
                     if (Math.Abs(loc.coordinates.latitude - history.Latitude) < 0.000001 &&
                         Math.Abs(loc.coordinates.longitude - history.Longitude) < 0.000001)
                     {
                         theAnchorObject = loc.gameObjectLocation;
-                        Debug.Log("Checking Relocated: " + loc.title);
+                        DebugEditor.Log("Checking Relocated: " + loc.title);
                         break;
                     }
                     /*
@@ -1009,7 +1023,7 @@ namespace i5.LLM_AR_Tourguide.GeospatialAPI
                     + Mathf.Pow(anchor.y - camera.y, 2.0f)
                     + Mathf.Pow(anchor.z - camera.z, 2.0f));
             var mapDistance = Mathf.Min(Mathf.Max(minDistance, distance), maxDistance);
-            Debug.Log("Map Distance: " + mapDistance);
+            DebugEditor.Log("Map Distance: " + mapDistance);
             return (mapDistance - minDistance) / (maxDistance - minDistance) + 1f;
         }
 
@@ -1188,15 +1202,15 @@ namespace i5.LLM_AR_Tourguide.GeospatialAPI
             var pointOfInterests = poiM.poiData.pointOfInterests;
             foreach (var loc in pointOfInterests)
             {
-                Debug.Log("Checking: " + loc.title);
-                Debug.Log("Checking: " + loc.coordinates.latitude + ", " + loc.coordinates.longitude);
-                Debug.Log("Checking: " + history.Latitude + ", " + history.Longitude);
-                Debug.Log("Checking Result: " + (loc.coordinates.latitude == history.Latitude &&
+                DebugEditor.Log("Checking: " + loc.title);
+                DebugEditor.Log("Checking: " + loc.coordinates.latitude + ", " + loc.coordinates.longitude);
+                DebugEditor.Log("Checking: " + history.Latitude + ", " + history.Longitude);
+                DebugEditor.Log("Checking Result: " + (loc.coordinates.latitude == history.Latitude &&
                                                        loc.coordinates.longitude == history.Longitude));
                 if (loc.coordinates.latitude == history.Latitude && loc.coordinates.longitude == history.Longitude)
                 {
                     theAnchorObject = loc.gameObjectLocation;
-                    Debug.Log("Checking Relocated: " + loc.title);
+                    DebugEditor.Log("Checking Relocated: " + loc.title);
                     break;
                 }
             }
@@ -1281,7 +1295,7 @@ namespace i5.LLM_AR_Tourguide.GeospatialAPI
 
             foreach (var location in pointOfInterests)
             {
-                Debug.Log("Checking Loading: " + location.title);
+                DebugEditor.Log("Checking Loading: " + location.title);
 
                 AddMyAnchorTerrain(location.coordinates);
                 AddMyAnchorRoofTop(location.coordinates);
@@ -1292,7 +1306,7 @@ namespace i5.LLM_AR_Tourguide.GeospatialAPI
 
         private void LoadGeospatialAnchorHistory()
         {
-            Debug.Log("Checking Loading Geospatial Anchor History");
+            DebugEditor.Log("Checking Loading Geospatial Anchor History");
             if (PlayerPrefs.HasKey(_persistentGeospatialAnchorsStorageKey))
             {
                 _historyCollection = new GeospatialAnchorHistoryCollection();
@@ -1312,7 +1326,7 @@ namespace i5.LLM_AR_Tourguide.GeospatialAPI
             }
             else
             {
-                Debug.Log("Checking No Geospatial Anchor History Found");
+                DebugEditor.Log("Checking No Geospatial Anchor History Found");
                 _historyCollection = new GeospatialAnchorHistoryCollection();
                 LoadMyLocations();
             }
@@ -1363,7 +1377,7 @@ namespace i5.LLM_AR_Tourguide.GeospatialAPI
 
             if (!Permission.HasUserAuthorizedPermission(Permission.Camera))
             {
-                Debug.Log("Requesting camera permission.");
+                DebugEditor.Log("Requesting camera permission.");
                 Permission.RequestUserPermission(Permission.Camera);
                 yield return new WaitForSeconds(3.0f);
             }
@@ -1371,7 +1385,7 @@ namespace i5.LLM_AR_Tourguide.GeospatialAPI
             if (!Permission.HasUserAuthorizedPermission(Permission.Camera))
             {
                 // User has denied the request.
-                Debug.LogWarning(
+                DebugEditor.LogWarning(
                     "Failed to get the camera permission. VPS availability check isn't available.");
                 yield break;
             }
@@ -1381,7 +1395,7 @@ namespace i5.LLM_AR_Tourguide.GeospatialAPI
 
             if (Input.location.status != LocationServiceStatus.Running)
             {
-                Debug.LogWarning(
+                DebugEditor.LogWarning(
                     "Location services aren't running. VPS availability check is not available.");
                 yield break;
             }

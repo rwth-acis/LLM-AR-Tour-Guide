@@ -157,6 +157,14 @@ namespace i5.LLM_AR_Tourguide.Guide_Scripts
             _chosenGuide = newGuide;
             PlayerPrefs.SetInt(GuideKey, (int)_chosenGuide);
         }
+        
+        public void ChangeGuide(int newGuide)
+        {
+            Debug.Log("Changing guide to " + newGuide);
+            Debug.Log(StackTraceUtility.ExtractStackTrace());
+            _chosenGuide = (GeneralGuideIdentifier)newGuide;
+            PlayerPrefs.SetInt(GuideKey, newGuide);
+        }
 
         public void ActivateGuide()
         {

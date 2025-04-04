@@ -32,6 +32,7 @@ namespace i5.LLM_AR_Tourguide.UI_Scripts
         private GeospatialPose GeospatialPose;
         private bool isCurrentlyChecking;
         private string localizationProgressString;
+        private string localizationErrorString;
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         private void Start()
@@ -39,6 +40,7 @@ namespace i5.LLM_AR_Tourguide.UI_Scripts
             IsLocalizationComplete = false;
             canvasGroup = GetComponent<CanvasGroup>();
             localizationProgressString = LocalizationSettings.StringDatabase.GetLocalizedString("LocalizationProgress");
+            localizationErrorString = LocalizationSettings.StringDatabase.GetLocalizedString("PleaseMakeSureThatYouAreConnectedToTheInternet");
         }
 
         // Update is called once per frame
@@ -50,7 +52,7 @@ namespace i5.LLM_AR_Tourguide.UI_Scripts
                 _lastMessageTime2 = Time.time;
                 if (Application.internetReachability == NetworkReachability.NotReachable)
                 {
-                    descriptionText.text = "Please make sure that you are connected to the internet.";
+                    descriptionText.text = localizationErrorString;
                     return;
                 }
             }
@@ -107,9 +109,6 @@ namespace i5.LLM_AR_Tourguide.UI_Scripts
             if (isCurrentlyChecking) yield break;
             isCurrentlyChecking = true;
             //wait three frames
-            yield return null;
-            yield return null;
-            yield return null;
             if (Mathf.Approximately(percentage, 100))
             {
                 if (Time.time - _lastMessageTime < 2.0f)
