@@ -121,6 +121,8 @@ namespace i5.LLM_AR_Tourguide.DataSources
             // 3. Make the API call
             using (HttpClient client = new())
             {
+                client.DefaultRequestHeaders.Add("User-Agent", "LLM-AR-Tour-Guide");
+                
                 try
                 {
                     var response = await client.GetAsync(apiUrl);
@@ -148,12 +150,12 @@ namespace i5.LLM_AR_Tourguide.DataSources
                 }
                 catch (HttpRequestException ex)
                 {
-                    DebugEditor.LogError($"Error: {ex.Message}");
+                    DebugEditor.LogError($"HttpRequest Error: {ex.Message}, {ex}");
                     return null;
                 }
                 catch (Exception ex)
                 {
-                    DebugEditor.LogError($"Error: {ex.Message}");
+                    DebugEditor.LogError($"Other Error: {ex.Message}, {ex}");
                     return null;
                 }
             }

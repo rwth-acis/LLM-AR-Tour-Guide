@@ -20,6 +20,8 @@ Find out how to set up the project and how to configurate your own tours.
 
 6.  **Initial Test (Editor):** Enter **Play Mode** (Ctrl+P or Cmd+P). You should be able to interact with the initial onboarding dialogs until a chat window appears. *(Note: Full functionality requires API keys and an Android device)*.
 
+7.  **Reset Player Preferences (optional):** If you have used this project before, reset PlayerPrefs to avoid potential issues:
+    * Click `Debug > Reset PlayerPrefs` in the Unity menu.
 ### API Key Configuration
 
 The app requires API keys from Google Cloud Platform to enable its core features (LLM, AR, Text-to-Speech).
@@ -27,7 +29,7 @@ The app requires API keys from Google Cloud Platform to enable its core features
 1.  **Google Cloud Project:**
     * If you don't have one, create a project in the [Google Cloud Console](https://console.cloud.google.com/).
     * Enable the following APIs within your project:
-        * **Gemini API:**: Search for "Gemini API" in the marketplace and enable it. This is **required** for the LLM. Ensure you only activate the free tier. ([Link]([https://console.cloud.google.com/vertex-ai](https://console.cloud.google.com/marketplace/product/google/generativelanguage.googleapis.com)))
+        * **Gemini API:** Search for "Gemini API" in the marketplace and enable it. This is **required** for the LLM. Ensure you only activate the free tier. ([Link](https://console.cloud.google.com/marketplace/product/google/generativelanguage.googleapis.com))
         * **ARCore API:** Search for "ARCore API" and enable it. This is **required** for AR functionality. Usage is typically free. ([Link](https://console.cloud.google.com/marketplace/product/google/arcore.googleapis.com))
         * **Text-to-Speech API:** Search for "Cloud Text-to-Speech API" and enable it. This is **optional** but recommended for voice output. The app uses CHIRP-HD voices and the app generates around ~15000 characters of text per tour. Check potential costs, the free tier should cover ~1 million characters/month, but costs might change. ([Link](https://console.cloud.google.com/marketplace/product/google/texttospeech.googleapis.com))
 

@@ -56,7 +56,7 @@ namespace i5.LLM_AR_Tourguide.Gemini
                     {
                         Name = "pointInDirectionOfPointOfInterest",
                         Description =
-                            "Makes you, the tour guide, point in the direction of one point of interest that might be interesting to the user. Use this when talking about one of the options that are not the current point of interest. The point of interest is specified by the 'pointOfInterest' parameter, options include the point of interests that are available in the tour, as well as points of interest surrounding them. Try to use those to point out features or nearby buildings to the user. Use this many times.",
+                            "Makes you, the tour guide, point in the direction of one point of interest that might be interesting to the user. The point of interest that you will point at is specified by the 'pointOfInterest' parameter, options include the point of interests that are available in the tour, as well as points of interest surrounding them. Only use this when the point of interest is specifically mentioned in the previous message or when asked by the user.",
                         Parameters = new GeminiSchema
                         {
                             Type = GeminiSchemaDataType.Object,
@@ -289,7 +289,11 @@ namespace i5.LLM_AR_Tourguide.Gemini
             var answer = string.Empty;
             if (!string.IsNullOrWhiteSpace(response.Candidates[0].Content.Parts[0].Text))
                 answer = Regex.Replace(response.Candidates[0].Content.Parts[0].Text, @"\[.*?\]", string.Empty);
-
+            
+            // remove all code blocks from the code
+            answer = Regex.Replace(answer, @"```.*?```", string.Empty, RegexOptions.Singleline);
+            answer = Regex.Replace(answer, @"``.*?``", string.Empty, RegexOptions.Singleline);
+            
             return (answer, allFunctionCalls);
         }
 
