@@ -1,5 +1,5 @@
 ## Manual 
-Find out how to set up the project and how to configurate your own tours.
+Find out how to set up the project and how to configure your own tours.
 
 ---
 
@@ -18,7 +18,7 @@ Find out how to set up the project and how to configurate your own tours.
 
 5.  **Open Main Scene:** In the Project window, navigate to `Assets/Scenes/` and open the `AppScene.unity` scene.
 
-6.  **Initial Test (Editor):** Enter **Play Mode** (Ctrl+P or Cmd+P). You should be able to interact with the initial onboarding dialogs until a chat window appears. *(Note: Full functionality requires API keys and an Android device)*.
+6.  **Initial Test (Editor):** Enter **Play Mode** (Ctrl+P or Cmd+P). You should be able to interact with the initial onboarding dialogs until a chat window appears. The chat window does not work until the API keys are defined but the onboarding can be skipped to open the AR experience in a test room. *(Note: Full functionality requires API keys and an Android device)*.
 
 7.  **Reset Player Preferences (optional):** If you have used this project before, reset PlayerPrefs to avoid potential issues:
     * Click `Debug > Reset PlayerPrefs` in the Unity menu.
@@ -35,7 +35,7 @@ The app requires API keys from Google Cloud Platform to enable its core features
 
 2.  **Create API Keys:**
     * In the Google Cloud Console, navigate to `APIs & Services > Credentials`.
-    * Either create three seperate API keys or one API key for all three APIs activated beforehand.
+    * Either create three separate API keys or one API key for all three APIs activated beforehand.
 
 3.  **Add Keys to Unity Project:**
     * **Gemini & Text-to-Speech Keys:**

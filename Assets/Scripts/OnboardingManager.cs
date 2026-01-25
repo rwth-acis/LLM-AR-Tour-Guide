@@ -21,7 +21,7 @@ public class OnboardingManager : MonoBehaviour
     // words that the AI might use the write a button for a custom response, the last possible answer will always be the custom answer button in other languages
     private readonly string[] customWordsButton = { "specify", "other", "custom", "alternative", "something else" };
 
-    private readonly int maxNumberOfUserAnswears = 3;
+    private readonly int maxNumberOfUserAnswers = 3;
     private readonly List<PossibleAnswerPanel> possibleAnswerPanels = new();
     private int currentNumberOfUserAnswers;
     private GuideManager guideManager;
@@ -30,6 +30,9 @@ public class OnboardingManager : MonoBehaviour
 
     private OnboardingUI onboardingUI;
     private PointOfInterestManager poiM;
+    
+    // Debug mode allows the user to skip the onboarding in case of an error
+    private bool debugMode = false;
 
     public void Start()
     {
@@ -58,7 +61,7 @@ public class OnboardingManager : MonoBehaviour
 
         onboardingChatManager.SetRole((int)GeminiRole.User);
         var response2 = await onboardingChatManager.OnChat("Your guide is getting ready...",
-            $"Before the start of a tour, you have to ask the participant some questions about who he or she is and what they are interested in. Try to ask specific questions and give examples of possible answers to make it easier for the participant, but keep it short and only ask one question per message. The user has {maxNumberOfUserAnswears} opportunities to respond. Keep your messages short. Use as much text formating as possible like this **bold** *italic*. Your next message will be shown directly to the user. After each message provide possible options that the user could use to answer in the following schema:\r\n\r\n[First option; Second option; Third option; etc...] Give the user the option to specify a custom answer. " +
+            $"Before the start of a tour, you have to ask the participant some questions about who he or she is and what they are interested in. Try to ask specific questions and give examples of possible answers to make it easier for the participant, but keep it short and only ask one question per message. The user has {maxNumberOfUserAnswers} opportunities to respond. Keep your messages short. Use as much text formating as possible like this **bold** *italic*. Your next message will be shown directly to the user. After each message provide possible options that the user could use to answer in the following schema:\r\n\r\n[First option; Second option; Third option; etc...] Give the user the option to specify a custom answer. " +
             languageText);
 
         if (response2 is { Length: > 1 })
@@ -69,12 +72,24 @@ public class OnboardingManager : MonoBehaviour
         else
         {
             response2[0].SetText("Something went wrong. Please check your connection and restart the app.");
-            UpdatePossibleAnswers(null, "[Restart the app]");
-
-            foreach (var panel in possibleAnswerPanels)
+            UpdatePossibleAnswers(null, "[Restart the app; Continue anyway]");
+            
+            for (int i = 0; i < possibleAnswerPanels.Count; i++)
             {
-                panel.GetComponent<Button>().onClick.RemoveAllListeners();
-                panel.GetComponent<Button>().onClick.AddListener(Application.Quit);
+                var button = possibleAnswerPanels[i].GetComponent<Button>();
+                button.onClick.RemoveAllListeners();
+
+                if (i == 0)
+                {
+                    // "Restart the app" - quit the application so it can be restarted
+                    button.onClick.AddListener(Application.Quit);
+                }
+                else
+                {
+                    // "Continue anyway" and finish the onboarding
+                    button.onClick.AddListener(finishOnboardingDialog);
+                    debugMode = true;
+                }
             }
         }
     }
@@ -95,10 +110,10 @@ public class OnboardingManager : MonoBehaviour
         if (string.IsNullOrEmpty(userAnswer))
             return;
         var modifiedAnswer =
-            $"{currentNumberOfUserAnswers} out of {maxNumberOfUserAnswears} User responses are used up. Remember to not get into to much detail and ask general question to get to know the user and to keep the messages short. " +
+            $"{currentNumberOfUserAnswers} out of {maxNumberOfUserAnswers} User responses are used up. Remember to not get into to much detail and ask general question to get to know the user and to keep the messages short. " +
             languageText + " The user responded: " +
             userAnswer;
-        if (currentNumberOfUserAnswers >= maxNumberOfUserAnswears - 1)
+        if (currentNumberOfUserAnswers >= maxNumberOfUserAnswers - 1)
             modifiedAnswer =
                 "This is the users last response. To the end of your tour add a button in the schema like [X; Y] where X and Y represent sayings to start the tour. Ony include buttons to start. Keep the message short. The user responded: " +
                 userAnswer;
@@ -108,7 +123,7 @@ public class OnboardingManager : MonoBehaviour
         {
             UpdatePossibleAnswers(response[1]);
 
-            if (currentNumberOfUserAnswers >= maxNumberOfUserAnswears - 1)
+            if (currentNumberOfUserAnswers >= maxNumberOfUserAnswers - 1)
                 foreach (var panel in possibleAnswerPanels)
                 {
                     panel.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -116,7 +131,7 @@ public class OnboardingManager : MonoBehaviour
                 }
 
             //DebugEditor.Log(currentNumberOfUserAnswers);
-            //DebugEditor.Log(maxNumberOfUserAnswears);
+            //DebugEditor.Log(maxNumberOfUserAnswers);
             currentNumberOfUserAnswers++;
         }
     }
@@ -124,12 +139,16 @@ public class OnboardingManager : MonoBehaviour
     public async void finishOnboardingDialog()
     {
         onboardingChatManager.readOutResponses = false;
-        var summery = await onboardingChatManager.OnChat(
-            "",
-            "The user finished the onboarding. Write a bullet point summery of what you know about the user in regards to the tour. This summery will be the only thing that you remember about the user for the tour. This message is only for yourself and only you will see it. Write it as if it was a short note for yourself, only include the summery.");
-        var summeryText = summery[1].GetCompleteText();
-        DebugEditor.Log("Summery: " + summeryText);
-
+        var summeryText = "";
+        if(!debugMode){
+            var summery = await onboardingChatManager.OnChat(
+                "",
+                "The user finished the onboarding. Write a bullet point summery of what you know about the user in regards to the tour. This summery will be the only thing that you remember about the user for the tour. This message is only for yourself and only you will see it. Write it as if it was a short note for yourself, only include the summery.");
+            summeryText = summery[1].GetCompleteText();
+            DebugEditor.Log("Summery: " + summeryText);
+        }else{
+            summeryText = "User chose to skip onboarding in debug mode.";
+        }
         var userInformation = GetComponent<UserInformation>();
         userInformation.userSummery = summeryText;
         userInformation.UpdatePersonalization();
@@ -149,7 +168,7 @@ public class OnboardingManager : MonoBehaviour
     public void UpdatePossibleAnswers(MessageBlock input, string replaceString = null)
     {
         var startIndex = 0;
-        var options = new string[0];
+        var options = Array.Empty<string>();
         if (input)
         {
             options = ExtractOptions(input.GetCompleteText());
@@ -207,12 +226,14 @@ public class OnboardingManager : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Expected format: [Option1; Option2; Option3]
+    /// </summary>
     public string[] ExtractOptions(string input)
     {
         var startIndex = input.IndexOf('[') + 1;
         var endIndex = input.IndexOf(']');
-        if (startIndex == -1 || endIndex == -1) return new string[0];
+        if (startIndex == -1 || endIndex == -1) return Array.Empty<string>();
 
         var optionsString = input.Substring(startIndex, endIndex - startIndex);
 
