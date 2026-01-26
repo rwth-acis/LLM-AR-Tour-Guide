@@ -9,7 +9,7 @@ Find out how to set up the project and how to configure your own tours.
 
 2.  **Open in Unity:** Open the cloned project folder using **Unity Hub** with **Unity Editor version 6000.0.39f1** (or newer).
 
-3.  **Automatic Upgrades:** If prompted by Unity upon opening, allow any recommended fixes or project upgrades. Close any other pop-up windows. e.g. "New Scoops have been added" or "Ready Player Me"-windows.
+3.  **Automatic Upgrades:** If prompted by Unity upon opening, allow any recommended fixes or project upgrades. Close any other pop-up windows. e.g. "New Scoops have been added".
 
 4.  **Set Build Target:** Switch the build platform to **Android**:
     * Go to `File > Build Profiles`

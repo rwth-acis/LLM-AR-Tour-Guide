@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using i5.LLM_AR_Tourguide.Guide_Scripts;
-using ReadyPlayerMe.Core;
+using i5.LLM_AR_Tourguide.Ready_Player_Me.Scripts;
 using UnityEngine;
 using UnityEngine.Networking;
 using Uralstech.UCloud.TextToSpeech;
