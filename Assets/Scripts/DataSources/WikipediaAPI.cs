@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using Newtonsoft.Json.Linq;
@@ -12,6 +13,9 @@ namespace i5.LLM_AR_Tourguide.DataSources
     public class WikipediaAPI : MonoBehaviour
     {
         private static readonly Dictionary<string, string> cache = new();
+        private static readonly System.Threading.SemaphoreSlim networkSemaphore = new(1, 1);
+        private static readonly TimeSpan minRequestInterval = TimeSpan.FromSeconds(2);
+        private static DateTime lastRequestTime = DateTime.MinValue;
 #if UNITY_EDITOR
         [MenuItem("Debug/WikipediaAPITest")]
 #endif
@@ -106,10 +110,14 @@ namespace i5.LLM_AR_Tourguide.DataSources
 
         public static async Task<string> GetWikipediaPageContent(string pageTitle, bool englishWikipedia = true)
         {
+            //Debug.Log($"Fetching Wikipedia content for '{pageTitle}' from {(englishWikipedia ? "English" : "German")} Wikipedia...");
             var cacheKey = $"{pageTitle}_{englishWikipedia}_WikipediaAPIContent";
             if (cache.TryGetValue(cacheKey, out var cachedContent)) return cachedContent;
             if (PlayerPrefs.HasKey(cacheKey)) return PlayerPrefs.GetString(cacheKey);
-
+            
+            //Debug.Log("Key not found in playerPrefs:" + cacheKey);
+            
+            //Debug.Log($"Getting Data Online for '{pageTitle}' from {(englishWikipedia ? "English" : "German")} Wikipedia...");
             // 1. Encode the page title for URL
             var encodedTitle = HttpUtility.UrlEncode(pageTitle);
 
@@ -118,47 +126,97 @@ namespace i5.LLM_AR_Tourguide.DataSources
                 ? $"https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&explaintext&titles={encodedTitle}"
                 : $"https://de.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&explaintext&titles={encodedTitle}";
 
-            // 3. Make the API call
-            using (HttpClient client = new())
+            // 3. Make the API call with rate limiting
+            await networkSemaphore.WaitAsync();
+            try
             {
-                client.DefaultRequestHeaders.Add("User-Agent", "LLM-AR-Tour-Guide");
-                
-                try
+                var elapsedSinceLastRequest = DateTime.UtcNow - lastRequestTime;
+                var remainingDelay = minRequestInterval - elapsedSinceLastRequest;
+                if (remainingDelay > TimeSpan.Zero)
                 {
-                    var response = await client.GetAsync(apiUrl);
-                    response.EnsureSuccessStatusCode(); // Throw if not successful
+                    await Task.Delay(remainingDelay);
+                }
+                lastRequestTime = DateTime.UtcNow;
 
-                    var json = await response.Content.ReadAsStringAsync();
+                using (HttpClient client = new())
+                {
+                    client.DefaultRequestHeaders.Add("User-Agent", "LLM-AR-Tour-Guide");
+                    
+                    int maxRetries = 3;
+                    int defaultDelaySeconds = 30;
 
-                    // 4. Parse the JSON response using Newtonsoft.Json
-                    var jsonObject = JObject.Parse(json);
+                    for (int attempt = 1; attempt <= maxRetries; attempt++)
+                    {
+                        try
+                        {
+                            var response = await client.GetAsync(apiUrl);
 
-                    // Extract the page content. This structure is a bit tricky as Wikipedia's API
-                    // nests the content within a dynamic key representing the page ID.
-                    if (jsonObject["query"]?["pages"] is JObject pages)
-                        foreach (var page in pages.Properties()) // Iterate through pages (usually just one)
-                            if (page.Value is JObject pageData && pageData["extract"] is JValue extract)
+                            if ((int)response.StatusCode == 429)
                             {
-                                var content = extract.ToString();
-                                cache[cacheKey] = content;
-                                PlayerPrefs.SetString(cacheKey, content);
-                                PlayerPrefs.Save();
-                                return content;
+                                int waitSeconds = defaultDelaySeconds;
+                                if (response.Headers.RetryAfter != null)
+                                {
+                                    if (response.Headers.RetryAfter.Delta.HasValue)
+                                    {
+                                        waitSeconds = (int)response.Headers.RetryAfter.Delta.Value.TotalSeconds;
+                                    }
+                                    else if (response.Headers.RetryAfter.Date.HasValue)
+                                    {
+                                        waitSeconds = (int)(response.Headers.RetryAfter.Date.Value - DateTimeOffset.UtcNow).TotalSeconds;
+                                    }
+                                }
+
+                                if (waitSeconds <= 0) waitSeconds = defaultDelaySeconds;
+
+                                Debug.LogWarning($"Wikipedia API returned 429 Too Many Requests. Waiting {waitSeconds} seconds before retry (Attempt {attempt} of {maxRetries})...");
+                                await Task.Delay(waitSeconds * 1000);
+                                continue;
                             }
 
-                    return null; // Page not found or error parsing
-                }
-                catch (HttpRequestException ex)
-                {
-                    DebugEditor.LogError($"HttpRequest Error: {ex.Message}, {ex}");
-                    return null;
-                }
-                catch (Exception ex)
-                {
-                    DebugEditor.LogError($"Other Error: {ex.Message}, {ex}");
-                    return null;
+                            response.EnsureSuccessStatusCode(); // Throw if not successful
+
+                            var json = await response.Content.ReadAsStringAsync();
+
+                            // 4. Parse the JSON response using Newtonsoft.Json
+                            var jsonObject = JObject.Parse(json);
+
+                            // Extract the page content. This structure is a bit tricky as Wikipedia's API
+                            // nests the content within a dynamic key representing the page ID.
+                            if (jsonObject["query"]?["pages"] is JObject pages)
+                                foreach (var page in pages.Properties()) // Iterate through pages (usually just one)
+                                    if (page.Value is JObject pageData && pageData["extract"] is JValue extract)
+                                    {
+                                        var content = extract.ToString();
+                                        cache[cacheKey] = content;
+                                        PlayerPrefs.SetString(cacheKey, content);
+                                        PlayerPrefs.Save();
+                                        return content;
+                                    }
+
+                            var contentNotFound = "";
+                            cache[cacheKey] = contentNotFound;
+                            PlayerPrefs.SetString(cacheKey, contentNotFound);
+                            PlayerPrefs.Save();
+                            return null; // Page not found or error parsing
+                        }
+                        catch (HttpRequestException ex)
+                        {
+                            DebugEditor.LogError($"HttpRequest Error: {ex.Message}, {ex}");
+                            return null;
+                        }
+                        catch (Exception ex)
+                        {
+                            DebugEditor.LogError($"Other Error: {ex.Message}, {ex}");
+                            return null;
+                        }
+                    }
                 }
             }
+            finally
+            {
+                networkSemaphore.Release();
+            }
+            return null;
         }
     }
 }
