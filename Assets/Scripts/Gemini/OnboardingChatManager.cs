@@ -7,7 +7,6 @@ using i5.LLM_AR_Tourguide.Prefab_Scripts;
 using UnityEngine;
 using UnityEngine.UI;
 using Uralstech.UGemini;
-using Uralstech.UGemini.Models;
 using Uralstech.UGemini.Models.Content;
 using Uralstech.UGemini.Models.Generation.Chat;
 
@@ -122,7 +121,7 @@ namespace i5.LLM_AR_Tourguide.Gemini
             try
             {
                 response = await GeminiManager.Instance.Request<GeminiChatResponse>(
-                    new GeminiChatRequest("gemini-2.0-flash", _useBeta)
+                    new GeminiChatRequest("gemini-flash-latest", _useBeta)
                     {
                         Contents = _chatHistory.ToArray(),
                         SystemInstruction = _systemPrompt
@@ -135,7 +134,7 @@ namespace i5.LLM_AR_Tourguide.Gemini
                 try
                 {
                     response = await GeminiManager.Instance.Request<GeminiChatResponse>(
-                        new GeminiChatRequest(GeminiModel.Gemini1_5Flash, _useBeta)
+                        new GeminiChatRequest("gemini-flash-lite-latest", _useBeta)
                         {
                             Contents = _chatHistory.ToArray(),
                             SystemInstruction = _systemPrompt
@@ -237,7 +236,7 @@ namespace i5.LLM_AR_Tourguide.Gemini
             try
             {
                 response = await GeminiManager.Instance.Request<GeminiChatResponse>(
-                    new GeminiChatRequest("gemini-2.0-flash", _useBeta)
+                    new GeminiChatRequest("gemini-flash-latest", _useBeta)
                     {
                         Contents = _chatHistory.ToArray(),
                         SystemInstruction = _systemPrompt
@@ -250,7 +249,7 @@ namespace i5.LLM_AR_Tourguide.Gemini
                 try
                 {
                     response = await GeminiManager.Instance.Request<GeminiChatResponse>(
-                        new GeminiChatRequest(GeminiModel.Gemini1_5Flash, _useBeta)
+                        new GeminiChatRequest("gemini-flash-lite-latest", _useBeta)
                         {
                             Contents = _chatHistory.ToArray(),
                             SystemInstruction = _systemPrompt

@@ -100,7 +100,7 @@ namespace i5.LLM_AR_Tourguide.Evaluation
                     tries++;
                     DebugEditor.Log("Requesting sending...");
                     var response = await GeminiManager.Instance.Request<GeminiChatResponse>(
-                        new GeminiChatRequest("gemini-2.5-pro-exp-03-25", true)
+                        new GeminiChatRequest("gemini-pro-latest", true)
                         {
                             Contents = _chatHistory.ToArray(),
                             SystemInstruction = _systemPrompt,

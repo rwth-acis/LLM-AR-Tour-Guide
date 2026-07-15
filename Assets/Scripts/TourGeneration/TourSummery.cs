@@ -64,7 +64,7 @@ namespace i5.LLM_AR_Tourguide.TourGeneration
             try
             {
                 chatResponse = await GeminiManager.Instance.Request<GeminiChatResponse>(
-                    new GeminiChatRequest("gemini-2.0-flash", true)
+                    new GeminiChatRequest("gemini-flash-latest", true)
                     {
                         Contents = history.ToArray(),
                         SystemInstruction = systemPrompt

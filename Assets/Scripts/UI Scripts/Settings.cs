@@ -108,7 +108,9 @@ namespace i5.LLM_AR_Tourguide.UI_Scripts
                 }
                 if (string.IsNullOrWhiteSpace(apiKeys._GoogleCloudTextToSpeechAPIKey))
                 {
-                    Debug.LogWarning("GoogleCloudTextToSpeechAPIKey is empty. Please set it in the inspector.");
+                    Debug.LogWarning("GoogleCloudTextToSpeechAPIKey is empty. Please set it in the inspector. Disabling voice.");
+                    disableVoice.isOn = true;
+                    SetVoice(true);
                 }
                 geminiAPIManager.SetApiKey(apiKeys._GoogleCloudGeminiAPIKey);
                 textToSpeechManager.SetApiKey(apiKeys._GoogleCloudTextToSpeechAPIKey);
